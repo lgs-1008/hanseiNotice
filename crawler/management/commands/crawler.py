@@ -1,31 +1,23 @@
 from django.core.management.base import BaseCommand, CommandError
 import time, re, datetime, os
 from selenium import webdriver
-
 from crawler.models import notice
 
 
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        # User Agent 설정
+
         options = webdriver.ChromeOptions()
-        #options.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
-
-        # driver 인스턴스 생성
-        #driver = webdriver.Chrome(executable_path=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'chromedriver.exe'), options=options)
-
-        #브라우저가 열리지 않게 헤드리스로 작동하게끔 해주는 코드.
         options.add_argument('headless')
         options.add_argument('window-size=1920x1080')
         options.add_argument("disable-gpu")
 
-        #driver = webdriver.Chrome('./chromedriver.exe')
         driver = webdriver.Chrome(executable_path=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'chromedriver'), options=options)
 
         url = "http://hansei.sen.hs.kr/50646/subMenu.do"
 
-        # 나이스 접속
+        # 학교 홈페이지 접속
         driver.get(url)
         time.sleep(3)
 
@@ -51,13 +43,5 @@ class Command(BaseCommand):
 
             except:
                 continue
-            #print("공지시작 --------------------------------------------")
-            #print(writer)
-            #print(date)
-            #print(title)
-            #print(detail)
-            #print("공지끝 ----------------------------------------------")
-
-
 
         driver.close()
